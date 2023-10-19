@@ -1,0 +1,24 @@
+Package: PRBpower
+Title: Nonparametric Approaches to Estimating Power For a Prosepctive-Retrospective Biomarker Study
+Version: 0.0.0.9000
+Authors@R: 
+    person("Mark F", "Brady", , "mfbrady001@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-6700-2981"))
+Description: Using data from a parent clinical trial, this program computes the power of a 
+ Prospective-Retrospective Biomarker (PRB) study in which the null hypothesis is that the
+ treatment hazard ratio among the marker-positive subjects is equal to the treatment hazard 
+ ratio among the marker-negative subjects.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.1
+Imports:
+    survival,
+    dplyr,
+    ggplot2
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Depends: 
+    R (>= 2.10)
+LazyData: true
