@@ -45,7 +45,7 @@
 #'
 join_parent <- function (dfp=dfp, dfm=dfm) {
   dfx <- dfp %>%
-    left_join(., dfm, by=c('survtime'='time', 'nrx'='nrx', "survstat"="survstat"))
+    left_join(dfm, by=c('survtime'='time', 'nrx'='nrx', "survstat"="survstat"))
   # define labels for summaries
   dfx$rx   <- factor(dfx$nrx,  levels=c(0,1), labels=c("Std", "Exp"), ordered=TRUE)
   dfx$BM   <- factor(dfx$BM,   levels=c(0,1), labels=c("Neg", "Pos"), ordered=TRUE)

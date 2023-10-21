@@ -1,5 +1,5 @@
 ---
-title: "PRBpower - Compute The Power of a prospective-retrospetive Biomarker Study Using a Time To Event Outcome"
+title: "PRBpower - Compute The Power of a prospective-retrospetive Biomarker Study with a Time To Event Outcome"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{PRBpower}
@@ -38,9 +38,9 @@ data(parentTrial)      # pull in the data from the parent clinical trial
 #   survstat (indicator for whether subjected evented: 0=censored, 1=evented)
 dfp <- parentTrial %>% select(nrx, survtime, survstat) %>%
         arrange(., nrx,survtime)
-dfp$nrx  <- ifelse(dfp$nrx==1, 0, 1)          # recode df$rx (1,2) -> (0,1)
-dfp$cens <- ifelse((dfp$survstat == 1), 1, 0) # recode censor indicator. 1=event; 0=censor
-dfp$rx   <- factor(dfp$nrx, levels=c(0,1), labels=c("std", "Exp"),ordered=TRUE) # std is ref grp.
+dfp$nrx      <- ifelse(dfp$nrx==1, 0, 1)          # recode df$rx (1,2) -> (0,1)
+dfp$survstat <- ifelse((dfp$survstat == 1), 1, 0) # recode censor indicator. 1=event; 0=censor
+dfp$rx       <- factor(dfp$nrx, levels=c(0,1), labels=c("std", "Exp"),ordered=TRUE) # std is ref grp.
 
 utils::head(dfp)
 
