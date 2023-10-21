@@ -51,7 +51,7 @@ sim_gen <- function (dfx, nsim) {
   colnames(rez) <- c("coef.nrx", "coef.BM", "coef.nrx.BM",
                      "se.nrx", "se.BM", "se.nrx.BM",
                      "p.nrx", "p.BM", "p.nrx.BM")
-  pb <- txtProgressBar(style=3, min=1, max=nsim)
+  # pb <- txtProgressBar(style=3, min=1, max=nsim)
   print ("starting simulations")
   for (isim in 1:nsim) {
     dfr <- dfx %>%
@@ -60,7 +60,7 @@ sim_gen <- function (dfx, nsim) {
     rez[isim, 1:3] <- res$coefficients[1:3]
     rez[isim, 4:6] <- res$coefficients [7:9]
     rez[isim, 7:9] <- res$coefficients [13:15]
-    setTxtProgressBar(pb,isim)
+    # setTxtProgressBar(pb,isim)
   }  # end of for loop isim
   print ("Simulations complete")
   rez <- as.data.frame(rez)

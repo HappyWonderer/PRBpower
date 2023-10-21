@@ -1,0 +1,84 @@
+---
+title: "PRBpower - Compute The Power of a prospective-retrospetive Biomarker Study Using a Time To Event Outcome"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{PRBpower}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(PRBpower)
+library(survival)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+# user supplied input ========================================================
+ppos    <- 0.20        # proportion of subjects expected M+ in trial population 
+HR      <- c(1.0, 0.5) # posited BM haz ratios M+ : M- for std and experimental treatment groups. 
+alpha   <- 0.05        # Type I error allocated to the biomarker study.
+nsim    <- 1000        # number of simulated trials to generate. 0 = no simulations. 
+# set.seed(20231003)
+
+data(parentTrial)      # pull in the data from the parent clinical trial
+# perform data transformations to have characteristics required for PRBpower
+# Specifically the parent data frame should have one records for each subject 
+# and at least the following 3 variables:
+#   nrx (treatment code; 0=standard treatment, 1=experimental(targeted) treatment).
+#   survtime (time at risk of the study event).
+#   survstat (indicator for whether subjected evented: 0=censored, 1=evented)
+dfp <- parentTrial %>% select(nrx, survtime, survstat) %>%
+        arrange(., nrx,survtime)
+dfp$nrx  <- ifelse(dfp$nrx==1, 0, 1)          # recode df$rx (1,2) -> (0,1)
+dfp$cens <- ifelse((dfp$survstat == 1), 1, 0) # recode censor indicator. 1=event; 0=censor
+dfp$rx   <- factor(dfp$nrx, levels=c(0,1), labels=c("std", "Exp"),ordered=TRUE) # std is ref grp.
+
+utils::head(dfp)
+
+# paramsCheck(ppos=ppos, HR=HR, nsim=nsim, alpha=alpha, dfp=dfp)
+  
+# calculate Kaplan-Meier estimates
+kmdef <- Surv(dfp$survtime, dfp$survstat == 1)
+kmfit <- survfit(kmdef ~ dfp$rx ) 
+  
+dfm <- dissect_km (ppos, HR, kmfit) # separate Trtmt Group KM into M- & M+
+  
+dfm <- ppos_calc (dfm, ppos) # compute probability of being M+ for each event/censor time 
+  
+# join parent trial data, df, to the estimated probabilities each subject is M+ 
+dfx <- join_parent (dfp, dfm)
+
+utils::head(dfx)
+  
+  # summarize number of observed events by treatment group in the parent trial. Also,  
+  # summarize expected number of events by treatment and Marker status under alt hypothesis. 
+  eventsTable.obs <- eventsTable_obs(dfx)
+  eventsTable.obs
+  eventsTable.exp <- eventsTable_exp (dfx) 
+  eventsTable.exp
+  
+  power.PG <- power_PG(EE=eventsTable.exp, HR=HR, alpha=alpha)
+  power.PG
+  
+  # if simulations are requested then do them 
+  if (nsim > 0) {
+    df.sim <- sim_gen (dfx, nsim)
+    power.sim <- sum(df.sim[ , "p.nrx.BM"] <= alpha)/nsim
+    print(power.sim)
+    RH.tab <- calc_RH(df.sim)
+    RH.tab
+  } else {
+    print(" === No simulations were requested")
+  }
+
+  plot_PRB (dfx=dfx, plotType=3, ppos=ppos, HR=HR )
+  

@@ -2,7 +2,7 @@
 % Please edit documentation in R/dissect_km.R
 \name{dissect_km}
 \alias{dissect_km}
-\title{Estimates the Survival For Biomarker positive (M+) and -negative (M-) subjects}
+\title{Estimates the Survival For Biomarker positive (M+) and -negative (M-) subjects.}
 \usage{
 dissect_km(ppos, HR, kmfit)
 }
@@ -20,7 +20,17 @@ A data frame containing K-M survival estimates for M+ and M- subjects
 in each treatment group in the parent trial.
 }
 \description{
-Estimates the Survival For Biomarker positive (M+) and -negative (M-) subjects
+Estimates the Survival For Biomarker positive (M+) and -negative (M-) subjects.
+}
+\details{
+Using the Kaplan-Meier estimated survival from the parent study, the
+posited biomarker hazard ratios and the expected prevalence of the biomarker in
+in the study population, this function computes the probability of being biomarker
+positive for each subject. If Sj+ and Sj- are the estimated survival for biomarker-
+positive and biomarker-negative subject in the jth treatment group, then
+Sj+ = Sj-^(HR(j)).  Also if p+ is the prevalence of the biomarker, then
+Sj = p+*Sj+ + (1-p+)*Sj-, where Sj is the observed survival of the subjects
+in the jth treatment group of the parent trial.
 }
 \examples{
 library(survival)

@@ -1,4 +1,4 @@
-#' Estimates the Survival For Biomarker positive (M+) and -negative (M-) subjects
+#' Estimates the Survival For Biomarker positive (M+) and -negative (M-) subjects.
 #'
 #' @param ppos The proportion of subjects assumed to be biomarker positive at time=0.
 #' @param HR An array with length=2 containing the biomarker hazard ratios under the
@@ -11,6 +11,15 @@
 #'
 #' @export
 #'
+#'@details Using the Kaplan-Meier estimated survival from the parent study, the
+#'posited biomarker hazard ratios and the expected prevalence of the biomarker in
+#'in the study population, this function computes the probability of being biomarker
+#'positive for each subject. If Sj+ and Sj- are the estimated survival for biomarker-
+#'positive and biomarker-negative subject in the jth treatment group, then
+#'Sj+ = Sj-^(HR(j)).  Also if p+ is the prevalence of the biomarker, then
+#'Sj = p+*Sj+ + (1-p+)*Sj-, where Sj is the observed survival of the subjects
+#'in the jth treatment group of the parent trial.
+
 #' @examples
 #' library(survival)
 #' library(dplyr)

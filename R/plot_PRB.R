@@ -1,5 +1,4 @@
-
-
+#'
 #' Commonly Created Plots for Prospective-Retrospective Biomarker Study Planning.
 #'
 #' @param dfx The data frame returned by join_parent().
@@ -122,5 +121,5 @@ plot_PRB <- function (dfx, plotType, ppos, HR ) {
 
     return(plt)
   }  # end of if (plotType %in% c(2,3)) ..else if
-}  # end of function plot_BM
+}  # end of function plot_PRB
 

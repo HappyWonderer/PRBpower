@@ -5,15 +5,15 @@
 \title{Computes the probability of being biomarker-positive (M+) at each event/censor
 time in the parent study.}
 \usage{
-ppos_calc(xx, ppos)
+ppos_calc(dfm, ppos)
 }
 \arguments{
-\item{xx}{This object is returned from the function dissect_km().}
+\item{dfm}{This object is returned from the function dissect_km().}
 
 \item{ppos}{The proportion of subjects expected to be M+ at time=0 (baseline)}
 }
 \value{
-A modified version of the input data frame, xx, that includes an estimate
+A modified version of the input data frame, dfm, that includes an estimate
 of being M+ at each event/censor time in the parent study.
 }
 \description{
@@ -35,6 +35,6 @@ kmfit <- survival::survfit(kmdef ~ dfp$rx )
 ppos  <- 0.30    # proportion of subjects expected to be M+ at the beginning of the study.
 HR    <- c(1,2)  # biomarker hazard ratios in the M- and M+ subgroups.
 dfm <- dissect_km(ppos=ppos, HR=HR, kmfit=kmfit)
-ppos_calc(xx=dfm, ppos=ppos)
+ppos_calc(dfm=dfm, ppos=ppos)
 
 }

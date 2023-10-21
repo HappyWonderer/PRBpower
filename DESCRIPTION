@@ -1,6 +1,6 @@
 Package: PRBpower
 Title: Nonparametric Approaches to Estimating Power For a Prosepctive-Retrospective Biomarker Study
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: 
     person("Mark F", "Brady", , "mfbrady001@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-6700-2981"))
@@ -17,6 +17,8 @@ Imports:
     dplyr,
     ggplot2
 Suggests: 
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Depends: 
@@ -24,3 +26,4 @@ Depends:
 LazyData: true
 URL: https://github.com/HappyWonderer/PRBpower
 BugReports: https://github.com/HappyWonderer/PRBpower/issues
+VignetteBuilder: knitr

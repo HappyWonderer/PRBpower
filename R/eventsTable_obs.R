@@ -35,10 +35,10 @@ eventsTable_obs <- function (dfx) {
     mutate ( nevt = ifelse (.data$cens == "Died", 1, 0),
              ncen = ifelse (.data$cens == "Censor", 1, 0)) %>%
     group_by( .data$rx) %>%
-    summarize(
-              rx.cen = sum(.data$ncen),
-              rx.evt = sum(.data$nevt),
-              total = n())
+    summarize( rx.cen = sum(.data$ncen),
+               rx.evt = sum(.data$nevt),
+               total = n())
+
   colnames(eventsTable.obs) <- c("Rx", "Censored", "Evented", "Total")
   return(eventsTable.obs)
 }
