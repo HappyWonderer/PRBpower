@@ -29,6 +29,7 @@ alpha   <- 0.05        # Type I error allocated to the biomarker study.
 nsim    <- 1000        # number of simulated trials to generate. 0 = no simulations. 
 # set.seed(20231003)
 
+
 data(parentTrial)      # pull in the data from the parent clinical trial
 # perform data transformations to have characteristics required for PRBpower
 # Specifically the parent data frame should have one records for each subject 
