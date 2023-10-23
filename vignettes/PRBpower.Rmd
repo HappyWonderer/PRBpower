@@ -28,6 +28,8 @@ HR      <- c(1.0, 0.5) # posited BM haz ratios M+ : M- for std and experimental 
 alpha   <- 0.05        # Type I error allocated to the biomarker study.
 nsim    <- 1000        # number of simulated trials to generate. 0 = no simulations. 
 # set.seed(20231003)
+interactive() 
+isFALSE(getOption('knitr.in.progress'))
 
 
 data(parentTrial)      # pull in the data from the parent clinical trial

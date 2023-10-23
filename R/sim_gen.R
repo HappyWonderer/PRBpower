@@ -48,11 +48,10 @@
 sim_gen <- function (dfx, nsim) {
   nsiz <- nrow(dfx)
   rez <- matrix(NA, nsim, 9)
-  pbar=TRUE
   colnames(rez) <- c("coef.nrx", "coef.BM", "coef.nrx.BM",
                      "se.nrx", "se.BM", "se.nrx.BM",
                      "p.nrx", "p.BM", "p.nrx.BM")
-  if (interactive() & (is.null(getOption("knitr.in.progress")))) pbar=TRUE
+  pbar <- ifelse (interactive(), TRUE, FALSE)
   if (pbar) pb <- txtProgressBar(style=3, min=1, max=nsim)
   print ("starting simulations")
   for (isim in 1:nsim) {
