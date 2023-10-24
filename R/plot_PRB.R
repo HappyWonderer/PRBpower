@@ -87,7 +87,7 @@ plot_PRB <- function (dfx, plotType, ppos, HR ) {
     warnMsg=""
     if (plotType == 2) {
       textMsg=paste("p+ = ", ppos, "\nBiomarker HR = ", HR[1])
-      if (HR[1] == 1) warnMsg="When the biomarker HR=1 these curves are superimposed"
+      if (HR[1]==1) warnMsg="When HR=1 these curves are superimposed"
       gtitle <- "Expected Survival for Standard Treatment Group\nand Biomarker Subgroups"
       df.xpose <- xpose(dfx=dfx, selx_nrx=0)
       # This factor statement is needed to control the order of the legend and mapping.
@@ -95,7 +95,7 @@ plot_PRB <- function (dfx, plotType, ppos, HR ) {
                                                        "Biomarker[-]", 'Biomarker[+]'), ordered=TRUE)
     }  else  {    # if plotType != 2
       textMsg=paste("p+ = ", ppos, "\nBiomarker HR = ", HR[2])
-      if (HR[2] == 1) warnMsg="When the biomarker HR=1 these curves are superimposed"
+      if (HR[2]==1) warnMsg="When HR=1 these curves are superimposed"
       gtitle <- "Expected Survival for Experimental Treatment Group\nand Biomarker Subgroups"
       df.xpose <- xpose(dfx=dfx, selx_nrx=1)
       df.xpose$gtype = factor(df.xpose$gtype, levels=c("Entire Treatment Group",
@@ -116,7 +116,7 @@ plot_PRB <- function (dfx, plotType, ppos, HR ) {
       scale_linetype_manual("Group/subgroup", values=c("solid", "dashed", "dotdash")) +
       theme(legend.position = c(0.8, 0.8))   +
       geom_text(aes(x=105, y=0.6, label=textMsg), size=3.5, fontface="plain", hjust=0) +
-      geom_text(aes(x=10, y=0.1, label=warnMsg), size=3, fontface="plain", hjust=0, alpha=0.50) +
+      geom_text(aes(x=0, y=0.05, label=warnMsg), size=3.0, fontface="plain", hjust=0, alpha=0.50) +
       theme(panel.background = element_rect(fill='transparent'),
             plot.background = element_rect(fill='transparent', color=NA),
             legend.key = element_rect(fill = "transparent", colour = "transparent"),
@@ -126,4 +126,3 @@ plot_PRB <- function (dfx, plotType, ppos, HR ) {
     return(plt)
   }  # end of if (plotType %in% c(2,3)) ..else if
 }  # end of function plot_PRB
-

@@ -1,5 +1,5 @@
 ---
-title: "PRBpower - Compute The Power of a prospective-retrospetive Biomarker Study with a Time To Event Outcome"
+title: "PRBpower"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{PRBpower}
@@ -82,6 +82,11 @@ utils::head(dfx)
   } else {
     print(" === No simulations were requested")
   }
+  
+  plot_PRB (dfx=dfx, plotType=1, ppos=ppos, HR=HR )
+
+  plot_PRB (dfx=dfx, plotType=2, ppos=ppos, HR=HR )
 
   plot_PRB (dfx=dfx, plotType=3, ppos=ppos, HR=HR )
-  
+
+```
