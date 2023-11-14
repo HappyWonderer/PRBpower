@@ -28,8 +28,8 @@ HR      <- c(1.0, 0.5) # posited BM haz ratios M+ : M- for std and experimental 
 alpha   <- 0.05        # Type I error allocated to the biomarker study.
 nsim    <- 1000        # number of simulated trials to generate. 0 = no simulations. 
 # set.seed(20231003)
-interactive() 
-isFALSE(getOption('knitr.in.progress'))
+interactive()          # test if being run as an interactive session.
+getOption('knitr.in.progress')   # test if being run as a knitr session. 
 
 
 data(parentTrial)      # pull in the data from the parent clinical trial
@@ -90,3 +90,4 @@ utils::head(dfx)
   plot_PRB (dfx=dfx, plotType=3, ppos=ppos, HR=HR )
 
 ```
+

@@ -36,12 +36,17 @@
 #'
 #'
 calc_RH <- function(df.sim) {
-    beta <- rbind(mean(df.sim$coef.nrx), mean(df.sim$coef.BM), mean(df.sim$coef.nrx.BM))
+  nsim <- length(df.sim)
+  RH <- matrix(NA, nsim, 9)
   xx   <- matrix(c(0, 0, 0,  1, 0, 0,  1, 0, 0,
                    0, 1, 0,  1, 1, 1,  1, 0, 1,
                    0, 1, 0,  0, 1, 1,  0, 0, 1), 9, 3, byrow=TRUE)
-  RHm   <- round(exp(xx %*% beta), digits=3)
-  RH   <- matrix(RHm, 3, 3, byrow=FALSE)
-  colnames(RH) <- c("Std", "Exp", "Exp:Std"); rownames(RH) <- c("Neg", "Pos", "Pos:Neg")
-  return (RH)
+  for (i in 1:nsim) {
+    RH[i, ] <- exp(xx %*% rbind(df.sim$coef.nrx[i], df.sim$coef.BM[i], df.sim$coef.nrx.BM[i]))
+  }
+
+  RHm <- colMeans(RH)
+  RHm   <- matrix(RHm, 3, 3, byrow=FALSE)
+  colnames(RHm) <- c("Std", "Exp", "Exp:Std"); rownames(RHm) <- c("Neg", "Pos", "Pos:Neg")
+  return (RHm)
 }
