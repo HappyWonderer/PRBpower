@@ -2,14 +2,14 @@
 #' Compute relative hazards for the groups:
 #' (rx.std, BM.neg), (rx.std, BM.pos), (rx.exp, BM.neg), (rx.exp, BM.pos)
 #'
-#' @param df.sim The is the data frame return by sim_gen()
+#' @param df.sim The data frame return by sim_gen()
 #'
 #' @return A matrix containing the relative hazards for each treatment group and marker status.
 #' The row and columns are labeled treatment and biomarker, respectively.
 #'
 #' @details This function computes the mean of the coefficients over all simulated trials.
-#' The relative hazards of each treatment x biomarker status is computed by summing the
-#' appropriate coefficients in the proportional hazards model and exponentiating the sum.
+#' The relative hazards of each treatment x biomarker status is computed by combining the
+#' appropriate coefficients and then exponentiating.
 #'
 #' @export
 #'
@@ -41,12 +41,9 @@ calc_RH <- function(df.sim) {
   xx   <- matrix(c(0, 0, 0,  1, 0, 0,  1, 0, 0,
                    0, 1, 0,  1, 1, 1,  1, 0, 1,
                    0, 1, 0,  0, 1, 1,  0, 0, 1), 9, 3, byrow=TRUE)
-  for (i in 1:nsim) {
-    RH[i, ] <- exp(xx %*% rbind(df.sim$coef.nrx[i], df.sim$coef.BM[i], df.sim$coef.nrx.BM[i]))
-  }
 
-  RHm <- colMeans(RH)
-  RHm   <- matrix(RHm, 3, 3, byrow=FALSE)
-  colnames(RHm) <- c("Std", "Exp", "Exp:Std"); rownames(RHm) <- c("Neg", "Pos", "Pos:Neg")
-  return (RHm)
+  RH <- exp(xx %*% rbind(mean(df.sim$coef.nrx), mean(df.sim$coef.BM), mean(df.sim$coef.nrx.BM)))
+  RH <- matrix(RH, 3, 3, byrow=TRUE)
+  colnames(RH) <- c("Std", "Exp", "Exp:Std"); rownames(RH) <- c("Neg", "Pos", "Pos:Neg")
+  return (RH)
 }

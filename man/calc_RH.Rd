@@ -8,7 +8,7 @@
 calc_RH(df.sim)
 }
 \arguments{
-\item{df.sim}{The is the data frame return by sim_gen()}
+\item{df.sim}{The data frame return by sim_gen()}
 }
 \value{
 A matrix containing the relative hazards for each treatment group and marker status.
@@ -20,8 +20,8 @@ Compute relative hazards for the groups:
 }
 \details{
 This function computes the mean of the coefficients over all simulated trials.
-The relative hazards of each treatment x biomarker status is computed by summing the
-appropriate coefficients in the proportional hazards model and exponentiating the sum.
+The relative hazards of each treatment x biomarker status is computed by combining the
+appropriate coefficients and then exponentiating.
 }
 \examples{
 library(survival)
