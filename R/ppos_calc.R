@@ -41,8 +41,10 @@ ppos_calc <- function (dfm, ppos) {
   # if dfm$survival = its lagged value then this indicates this a censored individual(s).
   dfm$survstat <- ifelse(dfm$survival == dfm$lag_survival, 0, 1)
 
+  # pp1 is prob of marker-pos among noncensored; pp0 is prob of marker-pos among censored
   pp1 <- ppos * dfm$surv_pos * (dfm$lag_surv_pos-dfm$surv_pos)/dfm$lag_surv_pos
-  pp0 <- ppos * (dfm$surv_pos/dfm$survival)
+  pp1 <- pp1 / (dfm$survival * (dfm$lag_survival - dfm$survival)/dfm$lag_survival)
+  pp0 <- ppos * dfm$surv_pos/dfm$survival
   dfm$ppos <- ifelse(dfm$survstat == 0, pp0, pp1)
   return(dfm)
 }  # end of function ppos_calc ==============================================
