@@ -38,9 +38,10 @@ ppos_calc <- function (dfm, ppos) {
   dfm[1,"lag_survival"] <- 1  # define missing lagged value
   dfm[1,"lag_surv_pos"] <- 1  # define missing lagged value
   # Need to recover the censoring indicator which survival::survfit() does not retain.
-  # if dfm$survival = its lagged value then this indicates these are censored individual(s).
+  # if dfm$survival = its lagged value then this indicates this a censored individual(s).
   dfm$survstat <- ifelse(dfm$survival == dfm$lag_survival, 0, 1)
-  pp1 <- ppos * (dfm$lag_surv_pos-dfm$surv_pos)/(dfm$lag_survival-dfm$survival)
+
+  pp1 <- ppos * dfm$surv_pos * (dfm$lag_surv_pos-dfm$surv_pos)/dfm$lag_surv_pos
   pp0 <- ppos * (dfm$surv_pos/dfm$survival)
   dfm$ppos <- ifelse(dfm$survstat == 0, pp0, pp1)
   return(dfm)
