@@ -44,7 +44,7 @@ ppos_calc <- function (dfm, ppos) {
   # pp1 is prob of marker-pos among noncensored; pp0 is prob of marker-pos among censored
   pp1 <- ppos * dfm$surv_pos * (dfm$lag_surv_pos-dfm$surv_pos)/dfm$lag_surv_pos
   pp1 <- pp1 / (dfm$survival * (dfm$lag_survival - dfm$survival)/dfm$lag_survival)
-  pp0 <- ppos * dfm$surv_pos/dfm$survival
+  pp0 <- ppos * dfm$lag_surv_pos/dfm$lag_survival
   dfm$ppos <- ifelse(dfm$survstat == 0, pp0, pp1)
   return(dfm)
 }  # end of function ppos_calc ==============================================

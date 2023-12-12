@@ -1,6 +1,6 @@
 Package: PRBpower
 Title: Nonparametric Approaches to Estimating Power For a Prosepctive-Retrospective Biomarker Study
-Version: 0.0.0.9005
+Version: 0.0.0.9006
 Authors@R: 
     person("Mark F", "Brady", , "mfbrady001@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-6700-2981"))
