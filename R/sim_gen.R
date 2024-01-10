@@ -53,7 +53,7 @@ sim_gen <- function (dfx, nsim) {
                      "p.nrx", "p.BM", "p.nrx.BM")
   pbar <- ifelse (interactive(), TRUE, FALSE)
   if (pbar) pb <- txtProgressBar(style=3, min=1, max=nsim)
-  print ("starting simulations")
+  if (pbar) print ("starting simulations")
   for (isim in 1:nsim) {
     dfr <- dfx %>%
       mutate (BM = ifelse(runif(nsiz, min=0, max=1) < dfx$ppos, 1, 0))
@@ -63,7 +63,7 @@ sim_gen <- function (dfx, nsim) {
     rez[isim, 7:9] <- res$coefficients [13:15]
     if (pbar) setTxtProgressBar(pb,isim)
   }  # end of for loop isim
-  print ("Simulations complete")
+  if (pbar) print ("Simulations complete")
   rez <- as.data.frame(rez)
   return(rez)
 } # end of function sim_gen

@@ -30,20 +30,26 @@
 #'
 ppos_calc <- function (dfm, ppos) {
   dfm <- arrange(dfm, .data$nrx, .data$survival) %>%
-    mutate (dfm, lag_survival = dplyr::lag(.data$survival),
+    mutate (dfm,
+            lag_survival = dplyr::lag(.data$survival),
             lag_surv_pos = dplyr::lag(.data$surv_pos),
+            lag_surv_neg = dplyr::lag(.data$surv_neg),
             survstat = NA,
             ppos = NA,
             BM   = 0)
   dfm[1,"lag_survival"] <- 1  # define missing lagged value
   dfm[1,"lag_surv_pos"] <- 1  # define missing lagged value
+  dfm[1,"lag_surv_neg"] <- 1  # define missing lagged value
   # Need to recover the censoring indicator which survival::survfit() does not retain.
   # if dfm$survival = its lagged value then this indicates this a censored individual(s).
   dfm$survstat <- ifelse(dfm$survival == dfm$lag_survival, 0, 1)
 
-  # pp1 is prob of marker-pos among noncensored; pp0 is prob of marker-pos among censored
-  pp1 <- ppos * (dfm$lag_surv_pos-dfm$surv_pos)/(dfm$lag_survival - dfm$survival)
-  pp0 <- ppos * dfm$lag_surv_pos/dfm$lag_survival
-  dfm$ppos <- ifelse(dfm$survstat == 0, pp0, pp1)
+  lik_pos <-   ppos   * dfm$surv_pos * (dfm$lag_surv_pos - dfm$surv_pos)/dfm$lag_surv_pos
+  lik_neg <- (1-ppos) * dfm$surv_neg * (dfm$lag_surv_neg - dfm$surv_neg)/dfm$lag_surv_neg
+
+  # pp_u is prob of marker-pos among uncensored at T=t; pp_c is among censored
+  pp_u <- lik_pos/(lik_pos + lik_neg)
+  pp_c <- ppos * dfm$surv_pos / (ppos * dfm$surv_pos + (1-ppos) * dfm$surv_neg)
+  dfm$ppos <- ifelse(dfm$survstat == 0, pp_c, pp_u)
   return(dfm)
 }  # end of function ppos_calc ==============================================

@@ -1,21 +1,23 @@
 
-#' Compute relative hazards for the groups:
+#' Compute mean relative hazards for the groups over all simulated trials:
 #' (rx.std, BM.neg), (rx.std, BM.pos), (rx.exp, BM.neg), (rx.exp, BM.pos)
 #'
 #' @param df.sim The data frame return by sim_gen()
 #'
-#' @return A matrix containing the relative hazards for each treatment group and marker status.
-#' The row and columns are labeled treatment and biomarker, respectively.
+#' @return A matrix containing the mean relative hazards for each treatment group
+#' and marker status. The row and columns are labeled treatment and biomarker, respectively.
 #'
-#' @details This function computes the mean of the coefficients over all simulated trials.
-#' The relative hazards of each treatment x biomarker status is computed by combining the
-#' appropriate coefficients and then exponentiating.
+#' @details This function computes the means (mu) and variances (var) of linear combinations (LLCs)
+#' of coefficients over all simulated trials. The means are the  relative hazards (RHs)
+#' of each treatment x biomarker status on the log scale. The mean RHs on the antilog
+#' scale are calculated as exp(mu(LLC) + var(LLC)/2)
 #'
 #' @export
 #'
 #' @examples
 #' library(survival)
 #' library(dplyr)
+#' library(stats)
 #' # read data from the parent clinical trial
 #' data(parentTrial)
 #' dfp <- parentTrial %>% select(nrx, survtime, survstat) %>%
@@ -42,7 +44,9 @@ calc_RH <- function(df.sim) {
                    0, 1, 0,  1, 1, 1,  1, 0, 1,
                    0, 1, 0,  0, 1, 1,  0, 0, 1), 9, 3, byrow=TRUE)
 
-  RH <- exp(xx %*% rbind(mean(df.sim$coef.nrx), mean(df.sim$coef.BM), mean(df.sim$coef.nrx.BM)))
+  m  <- xx %*% rbind(mean(df.sim$coef.nrx), mean(df.sim$coef.BM), mean(df.sim$coef.nrx.BM))
+  v  <- xx %*% rbind( stats::var(df.sim$coef.nrx),  stats::var(df.sim$coef.BM),  stats::var(df.sim$coef.nrx.BM))
+  RH <- exp(m + v/2)
   RH <- matrix(RH, 3, 3, byrow=TRUE)
   colnames(RH) <- c("Std", "Exp", "Exp:Std"); rownames(RH) <- c("Neg", "Pos", "Pos:Neg")
   return (RH)

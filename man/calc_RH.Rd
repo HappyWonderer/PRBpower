@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc_RH.R
 \name{calc_RH}
 \alias{calc_RH}
-\title{Compute relative hazards for the groups:
+\title{Compute mean relative hazards for the groups over all simulated trials:
 (rx.std, BM.neg), (rx.std, BM.pos), (rx.exp, BM.neg), (rx.exp, BM.pos)}
 \usage{
 calc_RH(df.sim)
@@ -11,21 +11,23 @@ calc_RH(df.sim)
 \item{df.sim}{The data frame return by sim_gen()}
 }
 \value{
-A matrix containing the relative hazards for each treatment group and marker status.
-The row and columns are labeled treatment and biomarker, respectively.
+A matrix containing the mean relative hazards for each treatment group
+and marker status. The row and columns are labeled treatment and biomarker, respectively.
 }
 \description{
-Compute relative hazards for the groups:
+Compute mean relative hazards for the groups over all simulated trials:
 (rx.std, BM.neg), (rx.std, BM.pos), (rx.exp, BM.neg), (rx.exp, BM.pos)
 }
 \details{
-This function computes the mean of the coefficients over all simulated trials.
-The relative hazards of each treatment x biomarker status is computed by combining the
-appropriate coefficients and then exponentiating.
+This function computes the means (mu) and variances (var) of linear combinations (LLCs)
+of coefficients over all simulated trials. The means are the  relative hazards (RHs)
+of each treatment x biomarker status on the log scale. The mean RHs on the antilog
+scale are calculated as exp(mu(LLC) + var(LLC)/2)
 }
 \examples{
 library(survival)
 library(dplyr)
+library(stats)
 # read data from the parent clinical trial
 data(parentTrial)
 dfp <- parentTrial \%>\% select(nrx, survtime, survstat) \%>\%
